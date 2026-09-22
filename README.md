@@ -8,6 +8,11 @@ A bilingual product design portfolio with three selected case studies:
 
 The Coda edition contains **12 pages**: Home, About, Work, and three case studies in English and Thai. The original portfolio's 28 routes are retained because both editions share content, assets, templates, and build infrastructure. There is no backend.
 
+## Website
+
+- English: <https://vagueslim.github.io/ProfiletoCoda/coda/>
+- ภาษาไทย: <https://vagueslim.github.io/ProfiletoCoda/th/coda/>
+
 ## Run locally
 
 Use **Node.js 22.12+** (or Node.js 24 LTS) and npm.
@@ -55,7 +60,7 @@ npm run preview -- --port 4175
 
 `npm test` builds all 40 routes into `dist/` and runs the regression tests for both editions. Preview the Coda edition at <http://127.0.0.1:4175/coda/> or <http://127.0.0.1:4175/th/coda/>.
 
-GitHub Actions runs installation, build, and tests on pushes and pull requests. It does **not** publish a website. For a future subdirectory deployment, Vite accepts `PORTFOLIO_BASE` (for example `/ProfiletoCoda/`); hosting configuration is separate from this repository upload.
+GitHub Actions runs installation, build, and tests on pushes and pull requests with `PORTFOLIO_BASE=/ProfiletoCoda/`. Successful builds on `main` publish `dist/` to GitHub Pages. Pull requests are tested without deploying. Local builds use `/` unless `PORTFOLIO_BASE` is set.
 
 ## Content and evidence
 
@@ -67,4 +72,4 @@ See [the editing notes](docs/coda-edition.md) for the boundaries between researc
 - แก้ข้อมูลและ template ตามตาราง แล้วรัน `npm run generate:pages`
 - รัน `npm test` ก่อนส่งขึ้น GitHub
 - ภาพที่ใช้ในเว็บอยู่ใน `src/assets/`; ไฟล์ติดตั้งและไฟล์ build ไม่ถูกเก็บใน Git
-- Repository นี้เก็บต้นฉบับสำหรับพัฒนาต่อ การเผยแพร่เว็บไซต์และส่งสมัครงานเป็นอีกขั้นตอนหนึ่ง
+- เมื่อ push เข้า `main` และผ่านการทดสอบ GitHub Actions จะเผยแพร่เว็บไซต์ให้ การส่งสมัครงานเป็นอีกขั้นตอนหนึ่ง

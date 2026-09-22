@@ -7,6 +7,7 @@ import { alternateCodaRoute, codaRoutePath, codaRoutes, codaWorkSlugs } from "..
 
 const projectRoot = resolve(import.meta.dirname, "..");
 const pageRoots = [projectRoot, resolve(projectRoot, "dist")];
+const deploymentBase = process.env.PORTFOLIO_BASE || "/";
 const count = (html, pattern) => (html.match(pattern) || []).length;
 const attribute = (tag, name) => tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1];
 const local = (value) => !/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(value);
@@ -16,7 +17,12 @@ function pathname(href, route) {
 }
 
 async function targetFile(root, href, route) {
-  const relativePath = pathname(href, route).replace(/^\//, "");
+  let resolvedPath = pathname(href, route);
+  // Vite prefixes production assets for project Pages, but dist has no prefix folder.
+  if (root !== projectRoot && deploymentBase !== "/" && resolvedPath.startsWith(deploymentBase)) {
+    resolvedPath = resolvedPath.slice(deploymentBase.length);
+  }
+  const relativePath = resolvedPath.replace(/^\//, "");
   let path = resolve(root, relativePath);
   try {
     await access(path);
