@@ -28,6 +28,8 @@ The Smart Asset case reuses the original portfolio's bilingual `coverFlow` in `s
 
 WCF evidence copies are in `src/assets/images/work/wcf-digital/coda/`: `medical-categories.png`, `medical-items.png`, `legacy-hospital-billing.png`, and `hospital-pricing-categories.jpeg`. These are supplied project evidence; avoid modifying them in ways that change the meaning of the interface.
 
+The Smart Asset **System flow evidence** appendix reuses the six `flowEvidence` records in `src/data/work-items.js`, including the overview and five rental stages. The Coda template renders a responsive card grid and uses the existing single image viewer. Keep these as specification evidence, separate from the confirmed Master Asset launch.
+
 ## Review after changes
 
 Run `npm test`, then inspect affected pages in both languages. Check mobile and desktop layouts, language pairing, next-case links, menu keyboard behavior, and enlarged images in the production preview. Avoid adding unverified outcomes to improve a resume or portfolio score.

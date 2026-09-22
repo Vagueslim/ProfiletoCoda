@@ -3,6 +3,7 @@ import { codaProjects, codaCaseCopy } from "../../src/data/coda-projects.js";
 import { changeDate } from "../../src/data/change-date.js";
 import { changeDateStations } from "../../src/data/change-date-stations.js";
 import { renderCodaAssetFlow } from "./coda-asset-flow.mjs";
+import { findWork } from "../../src/data/work-items.js";
 
 const labels = {
   en: { work: "Work", role: "My contribution", context: "Context", year: "Year", status: "Project status", next: "Next case", all: "All three projects", evidence: "Project evidence", open: "Enlarge image", close: "Close image", original: "Open original image", decisions: "Design decisions", outcome: "What happened", learning: "What I learned", problem: "The problem", process: "The process", read: "Explore the decisions" },
@@ -95,6 +96,29 @@ function wcf(item, route) {
   <section class="co-case-section co-case-reflection">${sectionHead("04", l.learning, c.learningTitle, c.learning)}<p class="co-case-note">${e(c.evidence)}</p></section>`;
 }
 
+function systemFlowEvidence(item, route) {
+  const c = codaCaseCopy[item.slug][route.locale];
+  const th = route.locale === "th";
+  const cards = findWork(item.slug).flowEvidence.map((evidence, index) => {
+    const src = assetPath(route, evidence.src);
+    const title = evidence.title[route.locale];
+    const description = evidence.description[route.locale];
+    return `<li class="co-case-flow-evidence__item">
+      <button class="co-case-flow-evidence__trigger" type="button" aria-haspopup="dialog" aria-label="${e(`${c.openDiagram}: ${title}`)}" data-image-modal-trigger data-image-src="${src}" data-image-alt="${e(evidence.alt[route.locale])}" data-image-title="${e(title)}" data-image-description="${e(description)}">
+        <span class="co-case-flow-evidence__snapshot">
+          <img src="${src}" width="${evidence.width}" height="${evidence.height}" alt="" loading="lazy">
+          <span class="co-case-flow-evidence__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
+        </span>
+        <span class="co-case-flow-evidence__copy"><strong>${e(title)}</strong><span>${e(description)}</span><span class="co-case-flow-evidence__action" aria-hidden="true">${e(c.openDiagram)} ↗</span></span>
+      </button>
+    </li>`;
+  }).join("\n");
+  return `<section class="co-case-section co-case-flow-evidence" id="system-flow-evidence" aria-labelledby="system-flow-evidence-title">
+    <header class="co-case-flow-evidence__header"><p class="co-case-label">${th ? "ภาคผนวก" : "Appendix"}</p><h2 id="system-flow-evidence-title">${e(c.flowEvidenceTitle)}</h2><p>${e(c.flowEvidenceIntro)}</p></header>
+    <ol class="co-case-flow-evidence__grid">${cards}</ol>
+  </section>`;
+}
+
 function smart(item, route) {
   const c = codaCaseCopy[item.slug][route.locale];
   const l = labels[route.locale];
@@ -106,7 +130,7 @@ function smart(item, route) {
   <section class="co-case-section" id="decisions">${sectionHead("02", l.decisions, c.modelTitle, c.model)}${decisions(c.decisions)}${media(route, base + "metadata-driven-asset.png", th ? "ความสัมพันธ์ของ Category, SKU และ Asset พร้อม QR" : "Metadata-driven asset: Category, SKU, and individual asset with QR", c.modelCaption, { className: "co-case-media--metadata", width: 1024, height: 1536 })}<div class="co-case-asset-grid">${media(route, base + "cover-flow/category-rules.webp", th ? "กติกาข้อมูลตาม Category" : "Category-specific field rules", c.categoryCaption, { width: 1327, height: 886 })}${media(route, base + "cover-flow/sku.webp", item.cover.alt[route.locale], c.skuCaption, { width: 1440, height: 735 })}</div></section>
   <section class="co-case-section co-case-split">${sectionHead("03", l.evidence, c.flowTitle, c.flowCopy)}${media(route, base + "flow-01-request-to-order.png", th ? "แผนภาพ Request to Order" : "Request-to-order activity diagram", c.flowCaption, { className: "co-case-media--diagram", width: 1784, height: 1736 })}</section>
   <section class="co-case-section co-case-outcome">${sectionHead("04", l.outcome, c.outcomeTitle, c.outcome)}<div class="co-case-outcome__detail"><p class="co-case-live"><span aria-hidden="true">●</span> ${e(item[route.locale].status)}</p><h3>${e(c.nextTitle)}</h3><p>${e(c.next)}</p></div></section>
-  <section class="co-case-section co-case-reflection">${sectionHead("05", l.learning, c.learningTitle, c.learning)}<p class="co-case-note">${e(c.evidence)}</p></section>`;
+  <section class="co-case-section co-case-reflection">${sectionHead("05", l.learning, c.learningTitle, c.learning)}<p class="co-case-note">${e(c.evidence)}</p></section>${systemFlowEvidence(item, route)}`;
 }
 
 function nextCase(item, route) {
