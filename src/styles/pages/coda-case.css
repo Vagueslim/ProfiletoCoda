@@ -109,6 +109,7 @@
 .co-case-smart-hero > div > p:last-child { font-size: 16px; color: var(--co-muted); }
 .co-case-smart-hero .co-case-media img { max-height: 510px; object-fit: contain; background: #fff; }
 .co-case-smart-hero .co-case-media__open { background: #d8e0eb; }
+.co-case .co-case-media--metadata { max-width: 1024px; margin: 40px auto 0; }
 .co-case-asset-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 45px; }
 .co-case-asset-grid img { height: 340px; object-fit: contain; background: #fff; }
 .co-case-media--diagram img { height: 540px; object-fit: contain; background: #fff; }
