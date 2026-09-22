@@ -1,5 +1,6 @@
 @import './pages/coda-case.css';
 @import './pages/coda-about.css';
+@import './components/coda-asset-flow.css';
 
 @font-face{font-family:'IBM Plex Sans Thai';src:url('../assets/fonts/ibm-plex-sans-thai-light.woff2') format('woff2');font-weight:300;font-display:swap}
 @font-face{font-family:'IBM Plex Sans Thai';src:url('../assets/fonts/ibm-plex-sans-thai-regular.woff2') format('woff2');font-weight:400;font-display:swap}

@@ -24,6 +24,8 @@ The shared project selection controls cards, case counts, About links, and next-
 
 ## Images
 
+The Smart Asset case reuses the original portfolio's bilingual `coverFlow` in `src/data/work-items.js` for **Master Asset / Site operation**. All seven evidence screens remain available on desktop and mobile. `scripts/templates/coda-asset-flow.mjs` renders the Coda version; `src/styles/components/coda-asset-flow.css` controls its layout. Images open in the existing case-study viewer, and the links below each screen identify and navigate to the next step. The Site screens describe the workflow, while the confirmed live scope remains Master Asset.
+
 WCF evidence copies are in `src/assets/images/work/wcf-digital/coda/`: `medical-categories.png`, `medical-items.png`, `legacy-hospital-billing.png`, and `hospital-pricing-categories.jpeg`. These are supplied project evidence; avoid modifying them in ways that change the meaning of the interface.
 
 ## Review after changes

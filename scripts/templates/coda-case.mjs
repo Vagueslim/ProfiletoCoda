@@ -2,6 +2,7 @@ import { escapeHtml as e, relativeHref } from "../lib/html.js";
 import { codaProjects, codaCaseCopy } from "../../src/data/coda-projects.js";
 import { changeDate } from "../../src/data/change-date.js";
 import { changeDateStations } from "../../src/data/change-date-stations.js";
+import { renderCodaAssetFlow } from "./coda-asset-flow.mjs";
 
 const labels = {
   en: { work: "Work", role: "My contribution", context: "Context", year: "Year", status: "Project status", next: "Next case", all: "All three projects", evidence: "Project evidence", open: "Enlarge image", close: "Close image", original: "Open original image", decisions: "Design decisions", outcome: "What happened", learning: "What I learned", problem: "The problem", process: "The process", read: "Explore the decisions" },
@@ -99,7 +100,7 @@ function smart(item, route) {
   const l = labels[route.locale];
   const th = route.locale === "th";
   const base = "src/assets/images/work/smart-asset-sa-ai/";
-  return `<div class="co-case-smart-hero"><div><p class="co-case-label">MASTER ASSET</p><h2>${e(c.modelTitle)}</h2><p>${e(c.model)}</p></div>${media(route, base + "cover-flow/asset.webp", th ? "การสร้างทรัพย์สินและ QR" : "Asset registration and QR identity", c.assetCaption, { eager: true })}</div>
+  return `${renderCodaAssetFlow(route)}
   ${context(item, route, c.context, c.scope)}
   <section class="co-case-section">${sectionHead("01", l.problem, c.challenge, c.before)}${flow(c.modelSteps)}</section>
   <section class="co-case-section" id="decisions">${sectionHead("02", l.decisions, c.modelTitle, c.model)}${decisions(c.decisions)}<div class="co-case-asset-grid">${media(route, base + "cover-flow/category-rules.webp", th ? "กติกาข้อมูลตาม Category" : "Category-specific field rules", c.categoryCaption, { width: 1327, height: 886 })}${media(route, base + "cover-flow/sku.webp", item.cover.alt[route.locale], c.skuCaption, { width: 1440, height: 735 })}</div></section>

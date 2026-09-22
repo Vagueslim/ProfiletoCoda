@@ -4,6 +4,8 @@ import { resolve } from "node:path";
 import test from "node:test";
 import { routes, workSlugs } from "../src/data/routes.js";
 import { alternateCodaRoute, codaRoutePath, codaRoutes, codaWorkSlugs } from "../src/data/coda-routes.js";
+import { findWork } from "../src/data/work-items.js";
+import { escapeHtml } from "../scripts/lib/html.js";
 
 const projectRoot = resolve(import.meta.dirname, "..");
 const pageRoots = [projectRoot, resolve(projectRoot, "dist")];
@@ -123,6 +125,28 @@ test("every Coda image, stylesheet, and script resolves in source and production
           assert.fail(`${route.path} has missing asset ${ref} in ${root}: ${error.message}`);
         }
       }
+    }
+  }
+});
+
+test("Smart Asset carries all original bilingual Master Asset and Site operation evidence into Coda", async () => {
+  const flow = findWork("smart-asset-sa-ai").coverFlow;
+  for (const root of pageRoots) {
+    for (const route of codaRoutes.filter(route => route.slug === "smart-asset-sa-ai")) {
+      const html = await readFile(resolve(root, route.file), "utf8");
+      const section = html.match(/<section\b[^>]*data-asset-site-flow[^>]*>[\s\S]*?<\/section>/)?.[0];
+      assert.ok(section, `${route.path} must include the source flow`);
+      assert.ok(section.includes(escapeHtml(flow.heading[route.locale])));
+      assert.ok(section.includes(escapeHtml(flow.description[route.locale])));
+      assert.deepEqual([...section.matchAll(/data-asset-flow-node="([^"]+)"/g)].map(match => match[1]), flow.nodes.map(node => node.id));
+      assert.equal(count(section, /data-image-modal-trigger\b/g), flow.nodes.length, "Every source screen must open the evidence viewer");
+      assert.doesNotMatch(section, /data:image\/gif/, "Mobile must receive all real evidence images");
+      for (const node of flow.nodes) {
+        assert.ok(section.includes(escapeHtml(node.title[route.locale])), node.id);
+        assert.ok(section.includes(escapeHtml(node.description[route.locale])), node.id);
+        assert.ok(section.includes(`alt="${escapeHtml(node.media.alt[route.locale])}"`), node.id);
+      }
+      for (const edge of flow.edges) assert.ok(section.includes(escapeHtml(edge.label[route.locale])));
     }
   }
 });
